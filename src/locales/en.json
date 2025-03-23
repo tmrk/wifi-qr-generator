@@ -1,0 +1,26 @@
+{
+    "appTitle": "WiFi QR Code Generator",
+    "networkName": "Network Name (SSID)",
+    "password": "Password",
+    "encryption": "Encryption",
+    "hiddenNetwork": "Hidden Network",
+    "generateQRCode": "Generate QR Code",
+    "downloadSVG": "Download SVG",
+    "downloadPNG": "Download PNG",
+    "exportDOCX": "Export DOCX",
+    "exportPDF": "Export PDF",
+    "previouslyGenerated": "Previously Generated QR Codes",
+    "advertisement": "Advertisement",
+    "settings": "Settings",
+    "language": "Language",
+    "displayGenerator": "Display Generator",
+    "displayHistory": "Display History",
+    "downloadButtons": "Download Buttons",
+    "pdf": "PDF",
+    "png": "PNG",
+    "docx": "DOCX",
+    "svg": "SVG",
+    "dynamicUrlParams": "Dynamic URL Parameters",
+    "none": "None"
+  }
+  
