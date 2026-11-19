@@ -1,0 +1,177 @@
+# Wi-Fi QR Generator: full reference
+
+> A free web app that turns a Wi-Fi network name and password into a QR code that phones scan to join the network. It runs entirely in the browser. There is no server API.
+
+App: https://tmrk.github.io/wifi-qr-generator/
+Source: https://github.com/tmrk/wifi-qr-generator
+Short version of this file: https://tmrk.github.io/wifi-qr-generator/llms.txt
+Machine-readable link interface (OpenAPI 3.1): https://tmrk.github.io/wifi-qr-generator/link-api.json
+
+## What it is, and what it is not
+
+- A static single-page app hosted on GitHub Pages. Opening the URL returns an HTML page. The QR code is drawn in the browser by JavaScript.
+- There is no HTTP API, no JSON endpoint and no account. The only way to "call" it is to open a URL, with or without query parameters, in a browser.
+- It can be installed as an app and works offline after the first load.
+- Languages: English (default), French (`lang=fr`) and Spanish (`lang=es`).
+
+## Privacy and safety
+
+- The network name and password are used only in the browser to draw the code. The app does not send them to any server, and it has no analytics that receive them.
+- URL parameters, including `password`, are read client-side. The app removes the query string from the address bar after loading, unless `dynamicUrlParams` is on.
+- A link that contains a password is still sensitive. The full URL can be kept in browser history, in the logs of the chat, mail or messaging service that carries the link, and by anyone the link is forwarded to. Share links with passwords carefully, and prefer a short-lived or guest password.
+- Codes created with the Generate button are saved in this browser's local storage (`qrHistory`) so they can be opened again. The user can delete one entry or clear the list at any time. Codes opened with `generate=true` are shown but not saved.
+
+## URL parameters
+
+Add them to https://tmrk.github.io/wifi-qr-generator/ as a normal query string. Percent-encode every value (spaces as `%20`, a literal `+` as `%2B`, `&` as `%26`, `#` as `%23`, `%` as `%25`). A `+` in a value is read as a space.
+
+### Network fields
+
+| Parameter | Accepted values | Default | Meaning |
+| --- | --- | --- | --- |
+| `ssid` | any text | empty | Network name. |
+| `password` | any text | empty | Password. Left out of the code when the network is open. |
+| `encryption` | see below, case-insensitive | `WPA` | Security type. Unknown values are ignored and the default stays. |
+| `isHidden` | boolean | `false` | Set when the network does not broadcast its name. |
+| `hidden` | boolean | `false` | Alias of `isHidden`. If both are present, `isHidden` wins. |
+
+`encryption` values (any letter case):
+
+| Value | Becomes |
+| --- | --- |
+| `WPA`, `WPA2`, `WPA3`, `SAE`, `WPA/WPA2` | `WPA` (shown as "WPA/WPA2") |
+| `WEP` | `WEP` |
+| `nopass`, `none`, `open` | `nopass` (open network, no password) |
+
+About WPA3: the app has one WPA option and writes `T:WPA` in the code. Phones read that for WPA2 networks and for WPA3 networks that also allow WPA2 (transition mode). The app does not write `T:SAE`, because many scanners do not recognise it. A network that accepts only WPA3 (SAE) may therefore fail to join from the scanned code on some devices. `WPA3` and `SAE` are accepted as inputs so that links do not break, not as a promise that WPA3-only networks work.
+
+### Show the code straight away
+
+| Parameter | Accepted values | Default | Meaning |
+| --- | --- | --- | --- |
+| `generate` | boolean | `false` | When true and the fields are valid, the page opens with the QR code already shown, as if Generate QR code had been pressed. |
+| `autogenerate` | boolean | `false` | Alias of `generate`. If both are present, `generate` wins. |
+
+- Valid means `ssid` is not empty, and `password` is not empty unless the network is open. If the fields are not valid, nothing is generated and the form is just pre-filled.
+- A code shown this way is a view. It is not added to the saved history, so opening a link never writes the password to the visitor's list of recent codes. A matching entry that is already in the history is shown as the open one.
+- On narrow screens the page scrolls to the code.
+
+### Settings
+
+| Parameter | Accepted values | Default | Meaning |
+| --- | --- | --- | --- |
+| `lang` | `en`, `fr`, `es` (lower case) | stored setting, else `en` | Interface language. |
+| `displayGenerator` | boolean | `true` | Show the form. With `false` and `generate=true` the page shows only the code. |
+| `displayHistory` | boolean | `true` | Show the list of recent codes. |
+| `downloadPNG`, `downloadPDF`, `downloadDOCX`, `downloadSVG` | boolean | `true` | Offer that export format. |
+| `dynamicUrlParams` | boolean | `false` | Keep the address bar in sync with the form and settings (password included). `false` clears the query string on load. |
+
+### Booleans
+
+`true`, `1` and `yes` mean on, in any letter case. `false`, `0` and `no` mean off. Any other value that is present also counts as off, which is how the app behaved before the aliases were added. A missing parameter keeps the default or the stored setting.
+
+### Precedence
+
+1. A value in the URL wins over the stored setting for that visit.
+2. Settings found in the URL are then saved as the visitor's settings (`appSettings` in local storage), like any other change in Settings. For example `displayGenerator=false` hides the form on later visits too, until it is turned on again in Settings. Prefer not to send settings parameters unless that is wanted.
+3. Network fields (`ssid`, `password`, `encryption`, `isHidden`) fill the form for that visit only. They are not stored unless the visitor presses Generate.
+4. With `dynamicUrlParams` on, the app writes the form and any non-default settings back to the address bar using the canonical names (`ssid`, `password`, `encryption`, `isHidden`, `lang`, `displayGenerator`, `displayHistory`, `downloadPDF`, `downloadPNG`, `downloadDOCX`, `downloadSVG`). Aliases are never written, and `generate` is not written.
+
+### Worked examples
+
+Base: `https://tmrk.github.io/wifi-qr-generator/`
+
+WPA network, opens on the code:
+
+```
+https://tmrk.github.io/wifi-qr-generator/?ssid=Office%20Guest&password=correct-horse-battery&generate=true
+```
+
+Open network (no password):
+
+```
+https://tmrk.github.io/wifi-qr-generator/?ssid=Cafe%20Free%20WiFi&encryption=open&generate=true
+```
+
+Hidden network:
+
+```
+https://tmrk.github.io/wifi-qr-generator/?ssid=Lab%20Net&password=s3cret%21&hidden=yes&generate=true
+```
+
+French interface:
+
+```
+https://tmrk.github.io/wifi-qr-generator/?lang=fr&ssid=Bureau&password=motdepasse&generate=true
+```
+
+Only the result, no form and no history (note that these two settings are saved on the visitor's device, see Precedence):
+
+```
+https://tmrk.github.io/wifi-qr-generator/?ssid=Office%20Guest&password=correct-horse-battery&generate=true&displayGenerator=false&displayHistory=false
+```
+
+Pre-fill the form only, so the person checks and presses Generate:
+
+```
+https://tmrk.github.io/wifi-qr-generator/?ssid=Office%20Guest&password=correct-horse-battery
+```
+
+Password with special characters (`p&ss #1+2`):
+
+```
+https://tmrk.github.io/wifi-qr-generator/?ssid=Home&password=p%26ss%20%231%2B2&generate=true
+```
+
+## The Wi-Fi QR payload
+
+The code contains a plain text string in the format that Android and iOS cameras understand:
+
+```
+WIFI:T:<WPA|WEP|nopass>;S:<ssid>;P:<password>;H:true;;
+```
+
+- `T` is the security type: `WPA`, `WEP` or `nopass`.
+- `S` is the network name. `P` is the password. For an open network the `P:` field is left out.
+- `H:true;` is added only for a hidden network.
+- The string ends with `;;`.
+- Escape these characters in the name and the password with a backslash: `\` `;` `,` `:` `"`. For example the password `a;b:c` is written `P:a\;b\:c;`.
+
+Examples:
+
+```
+WIFI:T:WPA;S:Office Guest;P:correct-horse-battery;;
+WIFI:T:nopass;S:Cafe Free WiFi;;
+WIFI:T:WPA;S:Lab Net;P:s3cret!;H:true;;
+WIFI:T:WPA;S:My\;Net;P:a\:b\\c;;
+```
+
+An agent that can draw QR codes itself can use this string directly and does not need the app. The app draws the code at error correction level H.
+
+## Page structure, for agents that operate the page
+
+The UI labels are translated. Add `lang=en` to the link to get the English labels below.
+
+- One `h1`: "Wi-Fi QR Generator". Landmarks: `header`, `main`.
+- Form "Network details":
+  - text input `#ssid` (name `ssid`), label "Network name"
+  - security buttons "WPA/WPA2", "WEP", "None"
+  - password input `#password` (name `password`), label "Password"; button "Show password" or "Hide password"; the field is replaced by a note when the security is None
+  - switch "Hidden network" (name `isHidden`)
+  - submit button "Generate QR code", disabled until the fields are valid
+- Result card, after generating: the network name as a heading, the security type, the QR code as an inline SVG, and the password (hidden behind dots until "Show password" is pressed). Buttons: "Download PNG" (or "Share" on devices that can share files), "More export formats" (a menu with PNG, PDF, DOCX and SVG, depending on the enabled formats).
+- "Recent codes" list, when there is history: each entry has an "Open <name>" button and a "Delete <name>" button. "Clear history" opens a confirmation dialog with "Clear history" and "Keep". Deleting shows an "Undo" message for a few seconds.
+- "Settings" button in the header opens a panel with theme, language, display options, export formats and dynamic URL parameters.
+- A collapsed "How it works" section at the bottom repeats the short help text.
+
+Stored data (local storage of the browser, nothing else): `appSettings` (settings) and `qrHistory` (a list of `{ id, ssid, password, encryption, isHidden, qrValue }`, newest first, where `id` is the creation time in milliseconds). Creating a code with the same name, password, security and hidden flag as an existing entry moves that entry to the top instead of adding a copy.
+
+## Exports
+
+PNG image, PDF (A4 page), DOCX (Word document) and SVG. On devices that support file sharing the PNG can also be shared. Exports are made in the browser and work offline.
+
+## Limits
+
+- No server, so no way to create a code without a browser that runs JavaScript.
+- `T:SAE` (WPA3-only) is not written. See the WPA3 note above.
+- A QR code carries the password in clear text. Anyone who can see or photograph the code can join the network.

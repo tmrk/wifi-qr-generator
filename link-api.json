@@ -1,0 +1,156 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Wi-Fi QR Generator link interface",
+    "version": "1.1.0",
+    "summary": "Query parameters that pre-fill the Wi-Fi QR Generator web page.",
+    "description": "This is not a server API. The Wi-Fi QR Generator is a static web app that runs entirely in the browser. The only operation is opening the page with query parameters, and the response is the HTML app, not JSON. Parameters, including the password, are read in the browser and are not sent to any server by the app. A URL that contains a password can still be stored in browser history and in the logs of whoever carries the link, so share such links carefully. Fuller notes: https://tmrk.github.io/wifi-qr-generator/llms-full.txt"
+  },
+  "servers": [
+    {
+      "url": "https://tmrk.github.io/wifi-qr-generator",
+      "description": "GitHub Pages. The path / below is https://tmrk.github.io/wifi-qr-generator/ (with the trailing slash)."
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "openWifiQrGenerator",
+        "summary": "Open the app, optionally pre-filled or showing a finished code",
+        "description": "Returns the HTML single-page app. The query parameters are processed by JavaScript in the browser. Percent-encode every value. Boolean parameters accept true, 1 and yes (on) and false, 0 and no (off), in any letter case; any other value counts as off. Settings parameters (lang, display*, download*, dynamicUrlParams) are also saved as the visitor's settings on that device.",
+        "parameters": [
+          {
+            "name": "ssid",
+            "in": "query",
+            "required": false,
+            "description": "Network name.",
+            "schema": { "type": "string" },
+            "example": "Office Guest"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "required": false,
+            "description": "Network password. Ignored for open networks. Sensitive: it appears in the URL.",
+            "schema": { "type": "string" },
+            "example": "correct-horse-battery"
+          },
+          {
+            "name": "encryption",
+            "in": "query",
+            "required": false,
+            "description": "Security type, case-insensitive. WPA, WPA2, WPA3, SAE and WPA/WPA2 all produce T:WPA in the code (the app never writes T:SAE, so a WPA3-only network may not join on some devices). nopass, none and open produce an open network. Unknown values are ignored.",
+            "schema": {
+              "type": "string",
+              "default": "WPA",
+              "enum": ["WPA", "WPA2", "WPA3", "SAE", "WPA/WPA2", "WEP", "nopass", "none", "open"]
+            }
+          },
+          {
+            "name": "isHidden",
+            "in": "query",
+            "required": false,
+            "description": "Hidden network. Takes priority over the alias hidden.",
+            "schema": { "$ref": "#/components/schemas/Boolean", "default": "false" }
+          },
+          {
+            "name": "hidden",
+            "in": "query",
+            "required": false,
+            "description": "Alias of isHidden.",
+            "schema": { "$ref": "#/components/schemas/Boolean", "default": "false" }
+          },
+          {
+            "name": "generate",
+            "in": "query",
+            "required": false,
+            "description": "Show the QR code on load when ssid is set (and password too, unless the network is open). The code is only shown. It is not added to the saved history.",
+            "schema": { "$ref": "#/components/schemas/Boolean", "default": "false" }
+          },
+          {
+            "name": "autogenerate",
+            "in": "query",
+            "required": false,
+            "description": "Alias of generate.",
+            "schema": { "$ref": "#/components/schemas/Boolean", "default": "false" }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "description": "Interface language, lower case.",
+            "schema": { "type": "string", "enum": ["en", "fr", "es"] }
+          },
+          {
+            "name": "displayGenerator",
+            "in": "query",
+            "required": false,
+            "description": "Show the form. Use false with generate=true to show only the code.",
+            "schema": { "$ref": "#/components/schemas/Boolean", "default": "true" }
+          },
+          {
+            "name": "displayHistory",
+            "in": "query",
+            "required": false,
+            "description": "Show the list of recent codes.",
+            "schema": { "$ref": "#/components/schemas/Boolean", "default": "true" }
+          },
+          {
+            "name": "downloadPNG",
+            "in": "query",
+            "required": false,
+            "description": "Offer PNG export.",
+            "schema": { "$ref": "#/components/schemas/Boolean", "default": "true" }
+          },
+          {
+            "name": "downloadPDF",
+            "in": "query",
+            "required": false,
+            "description": "Offer PDF export.",
+            "schema": { "$ref": "#/components/schemas/Boolean", "default": "true" }
+          },
+          {
+            "name": "downloadDOCX",
+            "in": "query",
+            "required": false,
+            "description": "Offer DOCX export.",
+            "schema": { "$ref": "#/components/schemas/Boolean", "default": "true" }
+          },
+          {
+            "name": "downloadSVG",
+            "in": "query",
+            "required": false,
+            "description": "Offer SVG export.",
+            "schema": { "$ref": "#/components/schemas/Boolean", "default": "true" }
+          },
+          {
+            "name": "dynamicUrlParams",
+            "in": "query",
+            "required": false,
+            "description": "Keep the address bar in sync with the form and settings, password included. false clears the query string on load.",
+            "schema": { "$ref": "#/components/schemas/Boolean", "default": "false" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The HTML app. This is not a JSON response, and nothing in it depends on a server.",
+            "content": {
+              "text/html": {
+                "schema": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Boolean": {
+        "type": "string",
+        "description": "true, 1 or yes is on. false, 0 or no is off. Case-insensitive. Any other value counts as off.",
+        "enum": ["true", "false", "1", "0", "yes", "no"]
+      }
+    }
+  }
+}
