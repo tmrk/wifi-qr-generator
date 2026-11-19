@@ -2,10 +2,34 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WiFi QR Code Generator</title>
-    <script type="module" crossorigin src="/wifi-qr-generator/assets/index-0O9vNZp-.js"></script>
-  </head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Wi-Fi QR Generator</title>
+    <meta name="description" content="Create a QR code that lets anyone join your Wi-Fi network. Works offline." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#171b22" media="(prefers-color-scheme: dark)" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Wi-Fi QR" />
+    <link rel="icon" href="/wifi-qr-generator/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/wifi-qr-generator/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/wifi-qr-generator/apple-touch-icon.png" />
+    <style>
+      html { background: #f4f6fa; }
+      @media (prefers-color-scheme: dark) { html { background: #0e1116; } }
+      html[data-theme='light'] { background: #f4f6fa; }
+      html[data-theme='dark'] { background: #0e1116; }
+    </style>
+    <script>
+      // Apply a saved manual theme before first paint to avoid a flash.
+      try {
+        var m = JSON.parse(localStorage.getItem('appSettings') || '{}').themeMode;
+        if (m === 'light' || m === 'dark') document.documentElement.dataset.theme = m;
+      } catch (e) {}
+    </script>
+    <script type="module" crossorigin src="/wifi-qr-generator/assets/index-DaXP98YN.js"></script>
+  <link rel="manifest" href="/wifi-qr-generator/manifest.webmanifest"></head>
   <body>
     <div id="root"></div>
   </body>
