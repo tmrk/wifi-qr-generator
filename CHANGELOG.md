@@ -5,6 +5,24 @@ All notable changes to Wi-Fi QR Generator will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-11-19
+
+### Added
+- Delete a recent code from the list, with an Undo message. The code open in the result card stays on screen.
+- Clear history, with a confirmation that the back gesture closes.
+- A collapsed "How it works" section with a short guide and answers to common questions, in English, French and Spanish.
+- Link options: `hidden` as another name for `isHidden`, `generate=true` (or `autogenerate`) to open straight on the QR code, and `true`/`false`, `1`/`0` or `yes`/`no` for every on/off option, in any letter case.
+- `encryption` accepts any letter case, plus `WPA2`, `WPA3`, `SAE` and `WPA/WPA2` (all written as WPA in the code), and `none` or `open` for an open network.
+- Search and sharing: page title and description, canonical address, language alternates, Open Graph and Twitter previews with a social image, structured data, `robots.txt` and `sitemap.xml`.
+- For AI agents and developers: `llms.txt`, `llms-full.txt` and a machine-readable description of the link options (`link-api.json`, OpenAPI 3.1).
+- The page text is also in the first HTML, so crawlers and no-JavaScript visitors can read it.
+
+### Changed
+- Generating a code that is already in the list moves it to the top with a new date instead of adding a copy. Duplicates already stored are merged when the page loads.
+- Form fields have stable ids and names (`ssid`, `password`), the form has a name, and the export menu button is called "More export formats".
+- The page title and description follow the selected language.
+- Link previews and files for crawlers are not stored for offline use, and the offline fallback no longer replaces those files.
+
 ## [1.0.0] - 2026-11-19
 
 ### Added

@@ -5,6 +5,7 @@ const palettes = {
     primary: { main: '#1b5fd1', dark: '#1450b3', contrastText: '#ffffff' },
     background: { default: '#f4f6fa', paper: '#ffffff' },
     text: { primary: '#14181f', secondary: '#4a5463' },
+    error: { main: '#b3261e', dark: '#8c1d18', contrastText: '#ffffff' },
     divider: 'rgba(20, 24, 31, 0.12)',
   },
   dark: {
@@ -12,6 +13,7 @@ const palettes = {
     primary: { main: '#8ab4ff', dark: '#b5d0ff', contrastText: '#0b1220' },
     background: { default: '#0e1116', paper: '#171b22' },
     text: { primary: '#eef1f6', secondary: '#a9b3c2' },
+    error: { main: '#ffb4ab', dark: '#ffcfc9', contrastText: '#410e0b' },
     divider: 'rgba(238, 241, 246, 0.14)',
   },
 };

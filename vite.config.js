@@ -32,8 +32,15 @@ export default defineConfig({
       workbox: {
         // Precache the shell and every lazy exporter chunk so exports work offline.
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest}'],
+        // Pictures for link previews and search results are only fetched by other sites.
+        globIgnores: ['og-image.*', 'screenshot.png'],
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         navigateFallback: `${base}index.html`,
+        // Files for crawlers and agents must be served as they are, not as the app shell.
+        // Matched against the path plus query, so anchor it to the exact file names.
+        navigateFallbackDenylist: [
+          /^\/wifi-qr-generator\/(?:llms\.txt|llms-full\.txt|robots\.txt|sitemap\.xml|link-api\.json|og-image\.(?:png|svg)|screenshot\.png)(?:\?.*)?$/,
+        ],
         cleanupOutdatedCaches: true,
       },
     }),

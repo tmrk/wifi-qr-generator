@@ -169,6 +169,7 @@ const ResultCard = ({ result, downloadButtons, onError }) => {
                 variant="outlined"
                 size="large"
                 disabled={busy}
+                aria-label={t('moreFormats')}
                 aria-haspopup="menu"
                 aria-expanded={Boolean(menuAnchor)}
                 onClick={(e) => setMenuAnchor(e.currentTarget)}

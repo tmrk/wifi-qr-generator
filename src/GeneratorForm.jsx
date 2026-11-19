@@ -16,6 +16,7 @@ import {
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useTranslation } from 'react-i18next';
+import { isValidForm } from './wifi';
 
 const textProps = {
   autoComplete: 'off',
@@ -29,7 +30,7 @@ const GeneratorForm = ({ values, onChange, onSubmit }) => {
   const [showPassword, setShowPassword] = useState(false);
   const { ssid, password, encryption, isHidden } = values;
   const open = encryption === 'nopass';
-  const canSubmit = ssid !== '' && (open || password !== '');
+  const canSubmit = isValidForm(values);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,13 +38,21 @@ const GeneratorForm = ({ values, onChange, onSubmit }) => {
   };
 
   return (
-    <Paper component="form" onSubmit={handleSubmit} variant="outlined" sx={{ p: { xs: 2, sm: 3 } }}>
-      <Typography variant="h2" component="h2" sx={{ mb: 2.5 }}>
+    <Paper
+      component="form"
+      aria-labelledby="network-details-title"
+      onSubmit={handleSubmit}
+      variant="outlined"
+      sx={{ p: { xs: 2, sm: 3 } }}
+    >
+      <Typography id="network-details-title" variant="h2" component="h2" sx={{ mb: 2.5 }}>
         {t('networkDetails')}
       </Typography>
       <Stack spacing={2.5}>
         <TextField
           fullWidth
+          id="ssid"
+          name="ssid"
           label={t('networkName')}
           value={ssid}
           onChange={(e) => onChange({ ssid: e.target.value })}
@@ -82,6 +91,8 @@ const GeneratorForm = ({ values, onChange, onSubmit }) => {
           <TextField
             className="rise"
             fullWidth
+            id="password"
+            name="password"
             label={t('password')}
             type={showPassword ? 'text' : 'password'}
             value={password}
@@ -112,7 +123,7 @@ const GeneratorForm = ({ values, onChange, onSubmit }) => {
           labelPlacement="start"
           sx={{ m: 0, justifyContent: 'space-between', minHeight: 56, alignItems: 'center' }}
           control={
-            <Switch checked={isHidden} onChange={(e) => onChange({ isHidden: e.target.checked })} />
+            <Switch name="isHidden" checked={isHidden} onChange={(e) => onChange({ isHidden: e.target.checked })} />
           }
           label={
             <Box sx={{ pr: 2 }}>

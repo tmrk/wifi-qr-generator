@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import {
   AppBar,
   Box,
+  Button,
   Container,
   CssBaseline,
   IconButton,
@@ -19,24 +20,33 @@ import GeneratorForm from './GeneratorForm';
 import ResultCard from './ResultCard';
 import QRHistory from './QRHistory';
 import AdPlaceholder from './AdPlaceholder';
+import About from './About';
+import ClearHistoryDialog from './ClearHistoryDialog';
 import DrawerMenu from './DrawerMenu';
 import UpdatePrompt from './UpdatePrompt';
 import { createAppTheme, barColor } from './theme';
-import { loadInitialState, syncUrl } from './storage';
-import { buildWifiString } from './wifi';
+import { addToHistory, findDuplicate, loadInitialState, newEntryId, saveHistory, syncUrl } from './storage';
+import { buildEntry, buildWifiString } from './wifi';
 import './i18n';
+
+const UNDO_MS = 8000;
 
 function App() {
   const { t, i18n } = useTranslation();
 
   const [initial] = useState(loadInitialState);
   const [form, setForm] = useState(initial.form);
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState(initial.autoResult);
   const [history, setHistory] = useState(initial.history);
   const [appSettings, setAppSettings] = useState(initial.settings);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [clearOpen, setClearOpen] = useState(false);
+  const [notice, setNotice] = useState('');
+  // The last deleted entry and where it was, so Undo can put it back.
+  const [undo, setUndo] = useState(null);
   const resultRef = useRef(null);
+  const mainRef = useRef(null);
+  const focusMainAfterClear = useRef(false);
   const latest = useRef({ form: initial.form, appSettings: initial.settings });
 
   const prefersDark = useMediaQuery('(prefers-color-scheme: dark)', { noSsr: true });
@@ -51,7 +61,9 @@ function App() {
   // Keep the language, the browser theme colour and the page background in sync.
   useEffect(() => {
     document.documentElement.lang = i18n.language;
-  }, [i18n.language]);
+    document.title = t('metaTitle');
+    document.querySelector('meta[name="description"]')?.setAttribute('content', t('metaDescription'));
+  }, [i18n.language, t]);
 
   useEffect(() => {
     const color = barColor(mode);
@@ -77,29 +89,76 @@ function App() {
   }, []);
 
   // On narrow screens the result sits below the form, so bring it into view.
-  const showResult = () => {
+  const showResult = useCallback(() => {
     if (!window.matchMedia('(max-width: 899.95px)').matches) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     requestAnimationFrame(() =>
       resultRef.current?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
     );
+  }, []);
+
+  // A link with generate=true opens on the code.
+  useEffect(() => {
+    if (initial.autoResult) showResult();
+  }, [initial, showResult]);
+
+  const updateHistory = (next) => {
+    setHistory(next);
+    saveHistory(next);
   };
 
+  // Generating a code that is already saved moves it to the top with a new date.
   const generateQRCode = () => {
-    const entry = {
-      id: Date.now(),
-      ssid: form.ssid,
-      // Open networks have no password.
-      password: form.encryption === 'nopass' ? '' : form.password,
-      encryption: form.encryption,
-      isHidden: form.isHidden,
-    };
-    entry.qrValue = buildWifiString(entry);
+    const entry = buildEntry(form, newEntryId(history));
     setResult(entry);
-    const updatedHistory = [entry, ...history];
-    setHistory(updatedHistory);
-    localStorage.setItem('qrHistory', JSON.stringify(updatedHistory));
+    updateHistory(addToHistory(history, entry));
     showResult();
+  };
+
+  const focusRow = (index) => {
+    requestAnimationFrame(() => {
+      const rows = document.querySelectorAll('[data-history-id]');
+      (rows[Math.min(index, rows.length - 1)] ?? mainRef.current)?.focus();
+    });
+  };
+
+  // The code shown in the result card stays: the card is a view, not the saved entry.
+  const handleDelete = (entry) => {
+    const index = history.findIndex((e) => e.id === entry.id);
+    if (index < 0) return;
+    updateHistory(history.filter((e) => e.id !== entry.id));
+    setUndo({ entry, index, open: true });
+    focusRow(index);
+  };
+
+  const handleUndo = () => {
+    if (!undo) return;
+    const { entry, index } = undo;
+    setUndo({ ...undo, open: false });
+    // Skip it if the same network was generated again in the meantime.
+    if (!findDuplicate(history, entry)) {
+      const next = [...history];
+      next.splice(Math.min(index, next.length), 0, entry);
+      updateHistory(next);
+    }
+    requestAnimationFrame(() =>
+      document.querySelector(`[data-history-id="${entry.id}"]`)?.focus()
+    );
+  };
+
+  const handleClear = () => {
+    setClearOpen(false);
+    setUndo(null);
+    updateHistory([]);
+    setNotice(t('historyCleared'));
+    focusMainAfterClear.current = true;
+  };
+
+  // Once the dialog is gone, focus lands on the page instead of the removed button.
+  const handleClearExited = () => {
+    if (!focusMainAfterClear.current) return;
+    focusMainAfterClear.current = false;
+    mainRef.current?.focus({ preventScroll: true });
   };
 
   const handleLoadHistory = (entry) => {
@@ -172,9 +231,16 @@ function App() {
 
       <Container
         component="main"
+        ref={mainRef}
+        tabIndex={-1}
         maxWidth={displayGenerator ? 'lg' : 'sm'}
         disableGutters
-        sx={{ ...gutter, pt: { xs: 2, md: 4 }, pb: 'calc(env(safe-area-inset-bottom) + 32px)' }}
+        sx={{
+          ...gutter,
+          pt: { xs: 2, md: 4 },
+          pb: 'calc(env(safe-area-inset-bottom) + 32px)',
+          '&:focus': { outline: 'none' },
+        }}
       >
         <Box
           sx={{
@@ -212,7 +278,7 @@ function App() {
                   key={result.id}
                   result={result}
                   downloadButtons={appSettings.downloadButtons}
-                  onError={setErrorMessage}
+                  onError={setNotice}
                 />
               ) : displayGenerator ? (
                 <Paper
@@ -244,7 +310,13 @@ function App() {
           {showHistory && (
             <Box sx={{ gridArea: 'history', display: 'grid', gap: 2, minWidth: 0 }}>
               <AdPlaceholder />
-              <QRHistory history={history} activeId={result?.id} onSelect={handleLoadHistory} />
+              <QRHistory
+                history={history}
+                activeId={result?.id}
+                onSelect={handleLoadHistory}
+                onDelete={handleDelete}
+                onClear={() => setClearOpen(true)}
+              />
             </Box>
           )}
         </Box>
@@ -252,13 +324,36 @@ function App() {
         <Box sx={{ mt: 3 }}>
           <AdPlaceholder />
         </Box>
+        <Box sx={{ mt: 3 }}>
+          <About />
+        </Box>
       </Container>
 
+      <ClearHistoryDialog
+        open={clearOpen}
+        onClose={() => setClearOpen(false)}
+        onConfirm={handleClear}
+        onExited={handleClearExited}
+      />
       <Snackbar
-        open={Boolean(errorMessage)}
+        open={Boolean(undo?.open)}
+        autoHideDuration={UNDO_MS}
+        onClose={(_, reason) => {
+          if (reason !== 'clickaway') setUndo((u) => u && { ...u, open: false });
+        }}
+        message={undo ? t('codeDeleted', { ssid: undo.entry.ssid }) : ''}
+        action={
+          <Button color="inherit" size="small" onClick={handleUndo}>
+            {t('undo')}
+          </Button>
+        }
+        sx={{ bottom: 'calc(env(safe-area-inset-bottom) + 8px)' }}
+      />
+      <Snackbar
+        open={Boolean(notice)}
         autoHideDuration={5000}
-        onClose={() => setErrorMessage('')}
-        message={errorMessage}
+        onClose={() => setNotice('')}
+        message={notice}
         sx={{ bottom: 'calc(env(safe-area-inset-bottom) + 8px)' }}
       />
       <UpdatePrompt />

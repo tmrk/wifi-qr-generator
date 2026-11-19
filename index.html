@@ -3,8 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Wi-Fi QR Generator</title>
-    <meta name="description" content="Create a QR code that lets anyone join your Wi-Fi network. Works offline." />
+    <title>Wi-Fi QR Generator: share your Wi-Fi with a QR code</title>
+    <meta name="description" content="Make a QR code that lets guests join your Wi-Fi. Export as PNG, PDF, DOCX or SVG. Free, private and works offline: nothing leaves your device." />
+    <link rel="canonical" href="https://tmrk.github.io/wifi-qr-generator/" />
+    <link rel="alternate" hreflang="en" href="https://tmrk.github.io/wifi-qr-generator/" />
+    <link rel="alternate" hreflang="fr" href="https://tmrk.github.io/wifi-qr-generator/?lang=fr" />
+    <link rel="alternate" hreflang="es" href="https://tmrk.github.io/wifi-qr-generator/?lang=es" />
+    <link rel="alternate" hreflang="x-default" href="https://tmrk.github.io/wifi-qr-generator/" />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#171b22" media="(prefers-color-scheme: dark)" />
@@ -12,15 +17,69 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Wi-Fi QR" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Wi-Fi QR Generator" />
+    <meta property="og:title" content="Wi-Fi QR Generator: share your Wi-Fi with a QR code" />
+    <meta property="og:description" content="Make a QR code that lets guests join your Wi-Fi. Export as PNG, PDF, DOCX or SVG. Free, private and works offline." />
+    <meta property="og:url" content="https://tmrk.github.io/wifi-qr-generator/" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:image" content="https://tmrk.github.io/wifi-qr-generator/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Wi-Fi QR Generator: the app icon and a QR code on a blue background" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Wi-Fi QR Generator: share your Wi-Fi with a QR code" />
+    <meta name="twitter:description" content="Make a QR code that lets guests join your Wi-Fi. Export as PNG, PDF, DOCX or SVG. Free, private and works offline." />
+    <meta name="twitter:image" content="https://tmrk.github.io/wifi-qr-generator/og-image.png" />
+    <meta name="twitter:image:alt" content="Wi-Fi QR Generator: the app icon and a QR code on a blue background" />
+
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="alternate" type="text/plain" href="https://tmrk.github.io/wifi-qr-generator/llms.txt" title="llms.txt" />
     <style>
       html { background: #f4f6fa; }
       @media (prefers-color-scheme: dark) { html { background: #0e1116; } }
       html[data-theme='light'] { background: #f4f6fa; }
       html[data-theme='dark'] { background: #0e1116; }
+      /* Text for crawlers and screen readers. React replaces it on mount, so it is
+         kept out of sight to avoid a flash. The noscript block below shows it. */
+      .prerender {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
     </style>
+    <noscript>
+      <style>
+        .prerender {
+          position: static;
+          width: auto;
+          height: auto;
+          margin: 0 auto;
+          overflow: visible;
+          clip-path: none;
+          white-space: normal;
+          max-width: 640px;
+          padding: 24px 16px;
+          font: 16px/1.5 system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+          color: #14181f;
+        }
+        .prerender a { color: #1b5fd1; }
+        @media (prefers-color-scheme: dark) {
+          .prerender { color: #eef1f6; }
+          .prerender a { color: #8ab4ff; }
+        }
+      </style>
+    </noscript>
     <script>
       // Apply a saved manual theme before first paint to avoid a flash.
       try {
@@ -28,9 +87,95 @@
         if (m === 'light' || m === 'dark') document.documentElement.dataset.theme = m;
       } catch (e) {}
     </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Wi-Fi QR Generator",
+        "url": "https://tmrk.github.io/wifi-qr-generator/",
+        "description": "Make a QR code that lets guests join your Wi-Fi. Export as PNG, PDF, DOCX or SVG. Free, private and works offline.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any (web browser)",
+        "browserRequirements": "Requires JavaScript and a current web browser. Works offline once loaded.",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "inLanguage": ["en", "fr", "es"],
+        "image": "https://tmrk.github.io/wifi-qr-generator/og-image.png",
+        "screenshot": {
+          "@type": "ImageObject",
+          "url": "https://tmrk.github.io/wifi-qr-generator/screenshot.png",
+          "caption": "The Wi-Fi QR Generator form next to a generated QR code"
+        },
+        "featureList": [
+          "WPA/WPA2, WEP and open networks, including hidden networks",
+          "Export as PNG, PDF, DOCX or SVG, or share the PNG",
+          "Works offline and installs as an app",
+          "Nothing is sent to a server: codes are made in the browser",
+          "Light and dark themes in English, French and Spanish",
+          "Links can pre-fill the form or open straight on a code"
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is it free?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. There is no account and nothing to pay." }
+          },
+          {
+            "@type": "Question",
+            "name": "Is my password sent anywhere?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. The code is made in your browser and nothing is sent to a server. Recent codes stay in this browser, and you can delete them at any time." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it work offline?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Once the page has loaded you can install it and use it without a connection." }
+          },
+          {
+            "@type": "Question",
+            "name": "Which formats can I export?",
+            "acceptedAnswer": { "@type": "Answer", "text": "PNG, PDF, DOCX and SVG. On phones that support it you can also share the PNG." }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Keep this text in step with the about* strings in src/locales/en.json and the FAQPage above. -->
+      <div class="prerender">
+        <h1>Wi-Fi QR Generator</h1>
+        <main>
+          <h2>How it works</h2>
+          <p>Make a QR code that lets guests join your Wi-Fi by scanning it with a phone camera. It works for WPA/WPA2, WEP and open networks, including hidden ones.</p>
+          <h3>How to use it</h3>
+          <ol>
+            <li>Enter the network name and choose the security type.</li>
+            <li>Type the password. Open networks do not need one.</li>
+            <li>Press Generate QR code, then print, download or share it.</li>
+          </ol>
+          <h3>Good to know</h3>
+          <dl>
+            <dt>Is it free?</dt>
+            <dd>Yes. There is no account and nothing to pay.</dd>
+            <dt>Is my password sent anywhere?</dt>
+            <dd>No. The code is made in your browser and nothing is sent to a server. Recent codes stay in this browser, and you can delete them at any time.</dd>
+            <dt>Does it work offline?</dt>
+            <dd>Yes. Once the page has loaded you can install it and use it without a connection.</dd>
+            <dt>Which formats can I export?</dt>
+            <dd>PNG, PDF, DOCX and SVG. On phones that support it you can also share the PNG.</dd>
+          </dl>
+          <p><a href="/wifi-qr-generator/llms.txt">Link options for developers and AI agents</a></p>
+          <noscript><p>JavaScript is needed to create a code.</p></noscript>
+        </main>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
