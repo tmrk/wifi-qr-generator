@@ -5,6 +5,11 @@ All notable changes to Wi-Fi QR Generator will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-11-20
+
+### Fixed
+- Recent codes: smaller corner rounding and more white space around each thumbnail, so the rounded frame no longer cuts into the code's corners.
+
 ## [1.1.0] - 2026-11-19
 
 ### Added

@@ -84,7 +84,7 @@ const QRHistory = ({ history, activeId, onSelect, onDelete, onClear }) => {
               >
                 <Box
                   aria-hidden="true"
-                  sx={{ bgcolor: '#fff', p: '6px', borderRadius: 1.5, lineHeight: 0, flexShrink: 0 }}
+                  sx={{ bgcolor: '#fff', p: '8px', borderRadius: '6px', lineHeight: 0, flexShrink: 0 }}
                 >
                   <QRCodeSVG value={buildWifiString(entry)} size={52} level="L" />
                 </Box>
