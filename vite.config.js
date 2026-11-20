@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-const base = '/wifi-qr-generator/'
+const base = '/'
 
 export default defineConfig({
   base,
@@ -35,11 +35,11 @@ export default defineConfig({
         // Pictures for link previews and search results are only fetched by other sites.
         globIgnores: ['og-image.*', 'screenshot.png'],
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
-        navigateFallback: `${base}index.html`,
+        navigateFallback: '/index.html',
         // Files for crawlers and agents must be served as they are, not as the app shell.
         // Matched against the path plus query, so anchor it to the exact file names.
         navigateFallbackDenylist: [
-          /^\/wifi-qr-generator\/(?:llms\.txt|llms-full\.txt|robots\.txt|sitemap\.xml|link-api\.json|og-image\.(?:png|svg)|screenshot\.png)(?:\?.*)?$/,
+          /^\/(?:llms\.txt|llms-full\.txt|robots\.txt|sitemap\.xml|link-api\.json|og-image\.(?:png|svg)|screenshot\.png)(?:\?.*)?$/,
         ],
         cleanupOutdatedCaches: true,
       },

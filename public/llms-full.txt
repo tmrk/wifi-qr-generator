@@ -2,10 +2,10 @@
 
 > A free web app that turns a Wi-Fi network name and password into a QR code that phones scan to join the network. It runs entirely in the browser. There is no server API.
 
-App: https://tmrk.github.io/wifi-qr-generator/
+App: https://wifiqr.marki.im/
 Source: https://github.com/tmrk/wifi-qr-generator
-Short version of this file: https://tmrk.github.io/wifi-qr-generator/llms.txt
-Machine-readable link interface (OpenAPI 3.1): https://tmrk.github.io/wifi-qr-generator/link-api.json
+Short version of this file: https://wifiqr.marki.im/llms.txt
+Machine-readable link interface (OpenAPI 3.1): https://wifiqr.marki.im/link-api.json
 
 ## What it is, and what it is not
 
@@ -23,7 +23,7 @@ Machine-readable link interface (OpenAPI 3.1): https://tmrk.github.io/wifi-qr-ge
 
 ## URL parameters
 
-Add them to https://tmrk.github.io/wifi-qr-generator/ as a normal query string. Percent-encode every value (spaces as `%20`, a literal `+` as `%2B`, `&` as `%26`, `#` as `%23`, `%` as `%25`). A `+` in a value is read as a space.
+Add them to https://wifiqr.marki.im/ as a normal query string. Percent-encode every value (spaces as `%20`, a literal `+` as `%2B`, `&` as `%26`, `#` as `%23`, `%` as `%25`). A `+` in a value is read as a space.
 
 ### Network fields
 
@@ -79,48 +79,48 @@ About WPA3: the app has one WPA option and writes `T:WPA` in the code. Phones re
 
 ### Worked examples
 
-Base: `https://tmrk.github.io/wifi-qr-generator/`
+Base: `https://wifiqr.marki.im/`
 
 WPA network, opens on the code:
 
 ```
-https://tmrk.github.io/wifi-qr-generator/?ssid=Office%20Guest&password=correct-horse-battery&generate=true
+https://wifiqr.marki.im/?ssid=Office%20Guest&password=correct-horse-battery&generate=true
 ```
 
 Open network (no password):
 
 ```
-https://tmrk.github.io/wifi-qr-generator/?ssid=Cafe%20Free%20WiFi&encryption=open&generate=true
+https://wifiqr.marki.im/?ssid=Cafe%20Free%20WiFi&encryption=open&generate=true
 ```
 
 Hidden network:
 
 ```
-https://tmrk.github.io/wifi-qr-generator/?ssid=Lab%20Net&password=s3cret%21&hidden=yes&generate=true
+https://wifiqr.marki.im/?ssid=Lab%20Net&password=s3cret%21&hidden=yes&generate=true
 ```
 
 French interface:
 
 ```
-https://tmrk.github.io/wifi-qr-generator/?lang=fr&ssid=Bureau&password=motdepasse&generate=true
+https://wifiqr.marki.im/?lang=fr&ssid=Bureau&password=motdepasse&generate=true
 ```
 
 Only the result, no form and no history (note that these two settings are saved on the visitor's device, see Precedence):
 
 ```
-https://tmrk.github.io/wifi-qr-generator/?ssid=Office%20Guest&password=correct-horse-battery&generate=true&displayGenerator=false&displayHistory=false
+https://wifiqr.marki.im/?ssid=Office%20Guest&password=correct-horse-battery&generate=true&displayGenerator=false&displayHistory=false
 ```
 
 Pre-fill the form only, so the person checks and presses Generate:
 
 ```
-https://tmrk.github.io/wifi-qr-generator/?ssid=Office%20Guest&password=correct-horse-battery
+https://wifiqr.marki.im/?ssid=Office%20Guest&password=correct-horse-battery
 ```
 
 Password with special characters (`p&ss #1+2`):
 
 ```
-https://tmrk.github.io/wifi-qr-generator/?ssid=Home&password=p%26ss%20%231%2B2&generate=true
+https://wifiqr.marki.im/?ssid=Home&password=p%26ss%20%231%2B2&generate=true
 ```
 
 ## The Wi-Fi QR payload

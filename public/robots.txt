@@ -1,11 +1,8 @@
-# robots.txt for the Wi-Fi QR Generator.
-# This file is published under the project path, https://tmrk.github.io/wifi-qr-generator/robots.txt.
-# Crawlers only read robots.txt at the root of a host, so it is not picked up from here
-# (the root of tmrk.github.io belongs to a different repository). It documents the intent:
-# everything under /wifi-qr-generator/ may be crawled, including by AI crawlers and agents.
+# robots.txt for the Wi-Fi QR Generator, https://wifiqr.marki.im/
+# Everything may be crawled, including by AI crawlers and agents.
 
 User-agent: *
-Allow: /wifi-qr-generator/
+Allow: /
 
 # Search and AI crawlers, named so the permission is explicit.
 User-agent: GPTBot
@@ -26,6 +23,6 @@ User-agent: Amazonbot
 User-agent: meta-externalagent
 User-agent: DuckAssistBot
 User-agent: MistralAI-User
-Allow: /wifi-qr-generator/
+Allow: /
 
-Sitemap: https://tmrk.github.io/wifi-qr-generator/sitemap.xml
+Sitemap: https://wifiqr.marki.im/sitemap.xml

@@ -2,14 +2,14 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Wi-Fi QR Generator link interface",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "summary": "Query parameters that pre-fill the Wi-Fi QR Generator web page.",
-    "description": "This is not a server API. The Wi-Fi QR Generator is a static web app that runs entirely in the browser. The only operation is opening the page with query parameters, and the response is the HTML app, not JSON. Parameters, including the password, are read in the browser and are not sent to any server by the app. A URL that contains a password can still be stored in browser history and in the logs of whoever carries the link, so share such links carefully. Fuller notes: https://tmrk.github.io/wifi-qr-generator/llms-full.txt"
+    "description": "This is not a server API. The Wi-Fi QR Generator is a static web app that runs entirely in the browser. The only operation is opening the page with query parameters, and the response is the HTML app, not JSON. Parameters, including the password, are read in the browser and are not sent to any server by the app. A URL that contains a password can still be stored in browser history and in the logs of whoever carries the link, so share such links carefully. Fuller notes: https://wifiqr.marki.im/llms-full.txt"
   },
   "servers": [
     {
-      "url": "https://tmrk.github.io/wifi-qr-generator",
-      "description": "GitHub Pages. The path / below is https://tmrk.github.io/wifi-qr-generator/ (with the trailing slash)."
+      "url": "https://wifiqr.marki.im",
+      "description": "The live app. The path / below is https://wifiqr.marki.im/."
     }
   ],
   "paths": {

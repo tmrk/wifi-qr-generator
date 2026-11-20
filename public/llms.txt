@@ -2,25 +2,25 @@
 
 > A free web app that turns a Wi-Fi network name and password into a QR code that phones scan to join the network. It runs entirely in the browser: there is no server API. You can open it with URL parameters that pre-fill the form, or that open straight on the finished code.
 
-Live app: https://tmrk.github.io/wifi-qr-generator/
+Live app: https://wifiqr.marki.im/
 
 The page is a static single-page app. Everything happens in the visitor's browser, and the app does not send the network name or password to any server. Parameters in the link, including the password, are read in the browser. A link with a password in it can still be stored in browser history and in the logs of whoever the link is sent through, so share such links carefully.
 
-To hand a person a ready QR code, build a link such as `https://tmrk.github.io/wifi-qr-generator/?ssid=Office%20Guest&password=correct-horse-battery&generate=true`. Percent-encode every value. To produce the raw Wi-Fi string yourself, use `WIFI:T:WPA;S:Office Guest;P:correct-horse-battery;;` and escape `\ ; , : "` with a backslash.
+To hand a person a ready QR code, build a link such as `https://wifiqr.marki.im/?ssid=Office%20Guest&password=correct-horse-battery&generate=true`. Percent-encode every value. To produce the raw Wi-Fi string yourself, use `WIFI:T:WPA;S:Office Guest;P:correct-horse-battery;;` and escape `\ ; , : "` with a backslash.
 
 ## Docs
 
-- [Full reference](https://tmrk.github.io/wifi-qr-generator/llms-full.txt): every URL parameter, accepted values, defaults, precedence, worked examples, the Wi-Fi QR payload format, page structure and limits.
-- [Link interface, OpenAPI 3.1](https://tmrk.github.io/wifi-qr-generator/link-api.json): machine-readable description of the query parameters of `GET /`. The response is the HTML app, not JSON.
+- [Full reference](https://wifiqr.marki.im/llms-full.txt): every URL parameter, accepted values, defaults, precedence, worked examples, the Wi-Fi QR payload format, page structure and limits.
+- [Link interface, OpenAPI 3.1](https://wifiqr.marki.im/link-api.json): machine-readable description of the query parameters of `GET /`. The response is the HTML app, not JSON.
 - [README](https://github.com/tmrk/wifi-qr-generator/blob/main/README.md): the same parameter table for humans, and development notes.
 
 ## App
 
-- [Wi-Fi QR Generator](https://tmrk.github.io/wifi-qr-generator/): the app, English by default.
-- [French](https://tmrk.github.io/wifi-qr-generator/?lang=fr): same app in French.
-- [Spanish](https://tmrk.github.io/wifi-qr-generator/?lang=es): same app in Spanish.
+- [Wi-Fi QR Generator](https://wifiqr.marki.im/): the app, English by default.
+- [French](https://wifiqr.marki.im/?lang=fr): same app in French.
+- [Spanish](https://wifiqr.marki.im/?lang=es): same app in Spanish.
 
 ## Optional
 
-- [Sitemap](https://tmrk.github.io/wifi-qr-generator/sitemap.xml)
+- [Sitemap](https://wifiqr.marki.im/sitemap.xml)
 - [Source code and changelog](https://github.com/tmrk/wifi-qr-generator)

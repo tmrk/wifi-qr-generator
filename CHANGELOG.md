@@ -5,6 +5,16 @@ All notable changes to Wi-Fi QR Generator will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-11-20
+
+### Changed
+- The app has moved to https://wifiqr.marki.im and is now hosted on Cloudflare.
+- `robots.txt` and `sitemap.xml` are now served from the domain root, so search engines read them.
+- The README is rewritten around the live app: what it does, how to use and install it, privacy and link parameters.
+
+### Removed
+- The GitHub Pages deployment.
+
 ## [1.1.1] - 2026-11-20
 
 ### Fixed

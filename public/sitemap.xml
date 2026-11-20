@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://tmrk.github.io/wifi-qr-generator/</loc>
+    <loc>https://wifiqr.marki.im/</loc>
     <lastmod>2026-11-19</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://tmrk.github.io/wifi-qr-generator/" />
-    <xhtml:link rel="alternate" hreflang="fr" href="https://tmrk.github.io/wifi-qr-generator/?lang=fr" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://tmrk.github.io/wifi-qr-generator/?lang=es" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tmrk.github.io/wifi-qr-generator/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://wifiqr.marki.im/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://wifiqr.marki.im/?lang=fr" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://wifiqr.marki.im/?lang=es" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://wifiqr.marki.im/" />
   </url>
 </urlset>

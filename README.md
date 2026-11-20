@@ -1,18 +1,29 @@
 # Wi-Fi QR Generator
 
-Create a QR code that lets anyone join your Wi-Fi network. Enter the network name, pick the security type, add the password and scan the result with a phone camera. Export it as PNG, PDF, DOCX or SVG, or share the PNG.
+**https://wifiqr.marki.im**
 
-Live: https://tmrk.github.io/wifi-qr-generator/
+Create a QR code that lets anyone join your Wi-Fi network. Enter the network name, pick the security type, add the password and scan the result with a phone camera. Export it as PNG, PDF, DOCX or SVG, or share the PNG. The app is available in English, French and Spanish.
 
-It installs as an app (use "Install" or "Add to Home Screen" in your browser) and works offline once it has loaded. Everything runs in the browser. Settings and recent codes are stored in local storage on your device. Recent codes can be deleted one by one or all at once.
+## How to use it
 
-## URL parameters
+1. Open https://wifiqr.marki.im.
+2. Type the network name (SSID), choose the security type (WPA, WEP or none) and enter the password. Tick "hidden" if the network does not broadcast its name.
+3. Generate the code. Point a phone camera at it to join the network.
+4. Download it, print it or share it. Recent codes are listed below the form, and you can delete them one by one or all at once.
 
-There is no server API. The page runs entirely in the browser, and parameters are read there. The app does not send the network name or password to any server.
+## Install it as an app
 
-A link that contains a password can still end up in browser history, in the logs of whoever carries the link (chat, mail, messaging services) and with anyone it is forwarded to. Share such links carefully.
+Use "Install" or "Add to Home Screen" in your browser. The app is a PWA and works offline once it has loaded.
 
-Parameters override stored settings on load. Percent-encode the values.
+## Privacy
+
+Everything runs in your browser. The network name and password are never sent to a server. Settings and recent codes stay in local storage on your device.
+
+## Share a link
+
+You can open the app with parameters in the address to pre-fill the form or to open straight on a finished code. Parameters override stored settings on load. Percent-encode the values.
+
+A link that contains a password can end up in browser history, in the logs of whoever carries the link (chat, mail, messaging services) and with anyone it is forwarded to. Share such links carefully.
 
 | Parameter | Values | Meaning |
 | --- | --- | --- |
@@ -38,29 +49,27 @@ Notes:
 
 Examples:
 
-- `?ssid=Cafe&password=karibu123&lang=fr`
-- `?ssid=Office%20Guest&password=correct-horse-battery&generate=true` opens on the code
-- `?ssid=Cafe%20Free%20WiFi&encryption=open&generate=true` open network
-- `?ssid=Lab%20Net&password=s3cret&hidden=yes&generate=true` hidden network
-- `?ssid=Office%20Guest&password=correct-horse-battery&generate=true&displayGenerator=false&displayHistory=false` code only
+- `https://wifiqr.marki.im/?ssid=Cafe&password=karibu123&lang=fr`
+- `https://wifiqr.marki.im/?ssid=Office%20Guest&password=correct-horse-battery&generate=true` opens on the code
+- `https://wifiqr.marki.im/?ssid=Cafe%20Free%20WiFi&encryption=open&generate=true` open network
+- `https://wifiqr.marki.im/?ssid=Lab%20Net&password=s3cret&hidden=yes&generate=true` hidden network
+- `https://wifiqr.marki.im/?ssid=Office%20Guest&password=correct-horse-battery&generate=true&displayGenerator=false&displayHistory=false` code only
 
 The Wi-Fi payload inside the code is `WIFI:T:WPA;S:<ssid>;P:<password>;H:true;;` with `\ ; , : "` escaped by a backslash. Open networks leave out `P:` and use `T:nopass`.
 
-## For AI agents and crawlers
+## For AI agents
 
-- [`llms.txt`](public/llms.txt) and [`llms-full.txt`](public/llms-full.txt) describe the app and the link options for language models.
-- [`link-api.json`](public/link-api.json) is an OpenAPI 3.1 description of the query parameters. It describes a link into a web page, not a server API.
-- `robots.txt` and `sitemap.xml` are in `public/`. They are published under `/wifi-qr-generator/`, so search engines will not read the robots file from there (it must sit at the root of the host).
+Agents can read [/llms.txt](https://wifiqr.marki.im/llms.txt) (with a longer [/llms-full.txt](https://wifiqr.marki.im/llms-full.txt)) and [/link-api.json](https://wifiqr.marki.im/link-api.json), an OpenAPI 3.1 description of the link parameters. It describes a link into a web page, not a server API.
 
 ## Development
 
 ```
 npm install
 npm run dev
-npm run lint
 npm run build
+npm run deploy
 ```
 
-Set `VITE_ADS_ENABLED=true` to show the advertisement placeholders.
+`npm run deploy` builds the app and publishes `dist` to Cloudflare as a Worker with static assets (see `wrangler.jsonc`). Run it from a machine that is logged in with `wrangler`. Set `VITE_ADS_ENABLED=true` to show the advertisement placeholders.
 
 The social image `public/og-image.png` is rendered from `public/og-image.svg`. The page text for crawlers in `index.html` and its FAQ data repeat the `about*` strings of `src/locales/en.json`, so change them together.
